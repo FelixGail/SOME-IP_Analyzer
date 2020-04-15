@@ -2,19 +2,14 @@ package surf.SomeIPAnalyzer;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Set;
-import java.util.HashSet;
 
 import java.math.*;
 
 import java.nio.file.*;
 import java.io.*;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
 
 import org.w3c.dom.*;
 import javax.xml.parsers.*;
-import java.io.*;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,12 +17,9 @@ import java.util.Properties;
 import org.xml.sax.SAXException;
 import org.javatuples.*;
 
-import static java.lang.Math.toIntExact;
-
 import com.espertech.esper.client.Configuration;
 import com.espertech.esper.client.EPAdministrator;
 import com.espertech.esper.client.EPStatement;
-import com.espertech.esper.client.UpdateListener;
 
 /**
 * Helper Class for different stuff.
@@ -243,21 +235,18 @@ public class helper {
 	/**
 	* Converter IP to integer
 	*/
-	private static int IP2Int(String ip){
+	private static long IP2Long(String ip){
 		
-		String ipString = "";
+		StringBuilder ipString = new StringBuilder();
 		int part;
-		String parts[] = ip.split("\\.");
+		String[] parts = ip.split("\\.");
 		for (int i = 0; i < parts.length; i++){
 			part = Integer.parseInt(parts[i]);
 			parts[i] = Integer.toHexString(0x100 | part).substring(1);
-			ipString = ipString + parts[i];
+			ipString.append(parts[i]);
 		}	
-		
 
-		int ipInt = Integer.parseInt(ipString, 16);  
-
-		return ipInt;
+		return Long.parseLong(ipString.toString(), 16);
 	}
 
 	/**
@@ -270,8 +259,8 @@ public class helper {
 	{
 		ArrayList<Long> serverMacs = new ArrayList<Long> ();
 		ArrayList<Long> clientMacs = new ArrayList<Long> ();
-		ArrayList<Integer> serverIps = new ArrayList<Integer> ();
-		ArrayList<Integer> clientIps = new ArrayList<Integer> ();
+		ArrayList<Long> serverIps = new ArrayList<>();
+		ArrayList<Long> clientIps = new ArrayList<>();
 
 		try 
 		{	
@@ -290,7 +279,7 @@ public class helper {
 						if (curNode.getNodeName().equals("MAC"))
             						serverMacs.add(Mac2Int(curNode.getTextContent()));
 						if (curNode.getNodeName().equals("IP"))
-            						serverIps.add(IP2Int(curNode.getTextContent()));
+            						serverIps.add(IP2Long(curNode.getTextContent()));
 					}
 				}
 			}
@@ -306,7 +295,7 @@ public class helper {
 						if (curNode.getNodeName().equals("MAC"))
             						clientMacs.add(Mac2Int(curNode.getTextContent()));
 						if (curNode.getNodeName().equals("IP"))
-            						clientIps.add(IP2Int(curNode.getTextContent()));
+            						clientIps.add(IP2Long(curNode.getTextContent()));
 					}
 				}
 			}

@@ -4,7 +4,7 @@
   <groupId>surf.SomeIPAnalyzer</groupId>
   <artifactId>SomeIPAnalyzer</artifactId>
   <packaging>jar</packaging>
-  <version>1.0</version>
+  <version>1.1</version>
   <name>SomeIPAnalyzer</name>
   <url>http://maven.apache.org</url>
 
